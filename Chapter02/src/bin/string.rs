@@ -114,10 +114,10 @@ fn main() {
     let username = "   P3ngu1n\n".trim();
     println!("{}", username);
     // Remove only leading whitespace
-    let username = "   P3ngu1n\n".trim_left();
+    let username = "   P3ngu1n\n".trim_start();
     println!("{}", username);
     // Remove only trailing whitespace
-    let username = "   P3ngu1n\n".trim_right();
+    let username = "   P3ngu1n\n".trim_end();
     println!("{}", username);
 
 

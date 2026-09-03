@@ -73,7 +73,7 @@ fn decode_bytes(bytes: &[u8]) -> io::Result<Vec<u8>> {
 }
 
 
-fn encode_file(file: &mut Read) -> io::Result<Vec<u8>> {
+fn encode_file(file: &mut dyn Read) -> io::Result<Vec<u8>> {
     // Files have a built-in encoder
     let mut encoded = file.zlib_encode(Compression::Best);
     let mut buffer = Vec::new();
@@ -81,7 +81,7 @@ fn encode_file(file: &mut Read) -> io::Result<Vec<u8>> {
     Ok(buffer)
 }
 
-fn decode_file(file: &mut Read) -> io::Result<Vec<u8>> {
+fn decode_file(file: &mut dyn Read) -> io::Result<Vec<u8>> {
     let mut buffer = Vec::new();
     // Files have a built-in decoder
     file.zlib_decode().read_to_end(&mut buffer)?;
