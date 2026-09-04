@@ -23,6 +23,16 @@ This book has been written with and tested for the Rust versions rustc 1.24.1 an
 
 To download the newest Rust version, visit https://rustup.rs/, where you will be able to download a Rust installer for your operating system. It's okay to leave it at the standard settings. Make sure to call rustup default nightly before starting Chapter 10, Using Experimental Nightly Features. Don't worry, you'll be reminded again when it's time.
 
+## Building the code with a modern Rust toolchain
+
+The repository has been updated to build with modern stable Rust (Rust 2024 edition, tested on rustc 1.97.1). The following changes were applied to keep the original examples compiling:
+
+- Each chapter now declares `edition = "2024"` in its `Cargo.toml`.
+- Deprecated APIs have been replaced with their current equivalents (for example, `trim_left`/`trim_right` → `trim_start`/`trim_end`, `compare_and_swap` → `compare_exchange`, `Box<Error>` → `Box<dyn Error>`, bare trait objects → `dyn` trait objects).
+- Old crate versions have been bumped where necessary (`serde`, `reqwest`, `csv`, `lazy_static`, `bitflags`, `regex`, and others).
+- Chapter 9 now uses `reqwest` with the `rustls-tls` backend to avoid depending on an OpenSSL version that is no longer available on many systems.
+- Chapter 10 no longer requires nightly. The unstable `Generator`/`yield` example was rewritten as a stable state machine, the benchmark harness was replaced with a simple timing `main`, and stabilized `#![feature(...)]` attributes were removed.
+
 An active internet connection is required for many recipes, as we will work intensively with crates. These are Rust's way of distributing libraries over the internet, and they are hosted at https://crates.io/.
 
 You might wonder why a book about Rust's standard library, or std for short, uses so much code from outside the std. That's because Rust, in contrast to most other system languages, was designed with strong dependency management in mind from the beginning. It's so easy to pull crates into your code that a lot of specific functionality has been outsourced to officially recommended crates. This helps the core standard library that is distributed with Rust to stay simple and very stable.
