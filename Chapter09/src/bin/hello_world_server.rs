@@ -37,11 +37,13 @@ fn run_with_service_function(addr: &SocketAddr) -> Result<(), hyper::Error> {
 
 // The following function does the same, but uses an explicitely created
 // struct HelloWorld that implements the Service trait
+#[allow(dead_code)]
 fn run_with_service_struct(addr: &SocketAddr) -> Result<(), hyper::Error> {
     let server = Http::new().bind(addr, || Ok(HelloWorld))?;
     server.run()
 }
 
+#[allow(dead_code)]
 struct HelloWorld;
 impl Service for HelloWorld {
     // Implementing a server requires specifying all involved types
@@ -49,7 +51,7 @@ impl Service for HelloWorld {
     type Response = Response;
     type Error = hyper::Error;
     // The future that wraps your eventual Response
-    type Future = Box<Future<Item = Self::Response, Error = Self::Error>>;
+    type Future = Box<dyn Future<Item = Self::Response, Error = Self::Error>>;
 
     fn call(&self, _: Request) -> Self::Future {
         // In contrast to service_fn, we need to explicitely return a future

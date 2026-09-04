@@ -39,7 +39,7 @@ impl<T> SomeOsFunctionality<T> {
         }
     }
 
-    fn lock(&self) -> SomeOsFunctionalityGuard<T> {
+    fn lock(&self) -> SomeOsFunctionalityGuard<'_, T> {
         // Lock the underlying resource.
         unsafe {
             self.inner.lock();

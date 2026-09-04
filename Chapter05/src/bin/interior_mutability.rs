@@ -1,8 +1,10 @@
+#[allow(dead_code)]
 trait EmailSender {
     fn send_mail(&self, msg: &Email) -> Option<String>;
 }
 
 #[derive(Debug, Clone)]
+#[allow(dead_code)]
 struct Email {
     from: String,
     to: String,
@@ -10,13 +12,15 @@ struct Email {
 }
 
 #[derive(Debug)]
+#[allow(dead_code)]
 struct Customer {
     address: String,
     wants_news: bool,
 }
 
 // Send news to every customer that wants to receive them
-fn publish_news(msg: &str, sender: &EmailSender, customers: &[Customer]) -> Option<i32> {
+#[allow(dead_code)]
+fn publish_news(msg: &str, sender: &dyn EmailSender, customers: &[Customer]) -> Option<i32> {
     let mut count = 0;
     let mut mail = Email {
         from: "Rust Newsletter".to_string(),

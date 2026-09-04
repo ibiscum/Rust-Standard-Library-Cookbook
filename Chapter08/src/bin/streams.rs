@@ -205,7 +205,7 @@ fn channel_threads_blocking() {
         let tx_2 = tx_2.sink_map_err(|_| panic!());
         let (a, b) = block_on(tx.send(10).join(tx_2.send(()))).unwrap();
 
-        block_on(a.send(30).join(b.send(()))).unwrap();
+        let _ = block_on(a.send(30).join(b.send(()))).unwrap();
     });
 
     let (_, rx_2) = block_on(rx_2.next()).ok().unwrap();

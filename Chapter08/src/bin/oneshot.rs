@@ -18,11 +18,11 @@ fn send_example() {
     // or if the order doesn't matter (futures_unordered)
     // Note: All futured_ordered()'ed futures must be set as a Box type
     let mut ordered_stream = futures_ordered(vec![
-        Box::new(rx_1) as Box<Future<Item = _, Error = _>>,
-        Box::new(rx_2) as Box<Future<Item = _, Error = _>>,
+        Box::new(rx_1) as Box<dyn Future<Item = _, Error = _>>,
+        Box::new(rx_2) as Box<dyn Future<Item = _, Error = _>>,
     ]);
 
-    ordered_stream.push(Box::new(rx_3) as Box<Future<Item = _, Error = _>>);
+    ordered_stream.push(Box::new(rx_3) as Box<dyn Future<Item = _, Error = _>>);
 
     // unordered example:
     // let unordered_stream = futures_unordered(vec![rx_1, rx_2, rx_3]);

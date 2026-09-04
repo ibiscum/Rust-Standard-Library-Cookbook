@@ -1,5 +1,5 @@
 use std::sync::Arc;
-use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering, ATOMIC_BOOL_INIT, ATOMIC_USIZE_INIT};
+use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 use std::thread;
 use std::ops::{Deref, DerefMut};
 use std::cell::UnsafeCell;
@@ -7,10 +7,10 @@ use std::cell::UnsafeCell;
 fn main() {
     // Atomics are primitive types suited for
     // well defined concurrent behaviour
-    let some_number = AtomicUsize::new(0);
+    let _some_number = AtomicUsize::new(0);
     // They are usually initialized by copying them from
     // their global constants, so the following line does the same:
-    let some_number = ATOMIC_USIZE_INIT;
+    let some_number = AtomicUsize::new(0);
 
     // load() gets the current value of the atomic
     // Ordering tells the compiler how exactly to handle the interactions
@@ -35,18 +35,20 @@ fn main() {
     // It will always return the old variable
     let comparison = 12_345;
     let new_val = 6_789;
-    let old_val = some_number.compare_and_swap(comparison, new_val, Ordering::SeqCst);
+    let old_val = some_number
+        .compare_exchange(comparison, new_val, Ordering::SeqCst, Ordering::SeqCst)
+        .unwrap_or_else(|x| x);
     if old_val == comparison {
         println!("The value has been updated");
     }
 
     // The previous atomic code is equivalent to
     // the following sequential code
-    let mut some_normal_number = 12_345;
+    let some_normal_number = 12_345;
     let old_val = some_normal_number;
     if old_val == comparison {
-        some_normal_number = new_val;
-        println!("The value has been updated sequentially");
+        let some_normal_number = new_val;
+        println!("The value has been updated sequentially to {}", some_normal_number);
     }
 
     // fetch_add() and fetch_sub() add/subtract a number from the value,
@@ -62,7 +64,7 @@ fn main() {
     // fetch_or() performs an "or" ("||") operation on the variable and
     // an argument and sets the variable to the result. It then returns the old value.
     // For the other logical operations, fetch_and(), fetch_nand() and fetch_xor also exist
-    let some_bool = ATOMIC_BOOL_INIT;
+    let some_bool = AtomicBool::new(false);
     let old_val = some_bool.fetch_or(true, Ordering::SeqCst);
     let curr_val = some_bool.load(Ordering::SeqCst);
     println!("({} || true) is {}", old_val, curr_val);
@@ -114,15 +116,17 @@ pub struct NaiveMutexGuard<'a, T: 'a> {
 impl<T> NaiveMutex<T> {
     pub fn new(data: T) -> Self {
         NaiveMutex {
-            locked: ATOMIC_BOOL_INIT,
+            locked: AtomicBool::new(false),
             data: UnsafeCell::new(data),
         }
     }
 
-    pub fn lock(&self) -> NaiveMutexGuard<T> {
+    pub fn lock(&self) -> NaiveMutexGuard<'_, T> {
         // The following algorithm is called a "spinlock", because it keeps
         // the current thread blocked by doing nothing (it keeps it "spinning")
-        while self.locked.compare_and_swap(false, true, Ordering::SeqCst) {}
+        while self.locked.compare_exchange(false, true, Ordering::SeqCst, Ordering::SeqCst)
+            != Ok(false)
+        {}
         NaiveMutexGuard { naive_mutex: self }
     }
 }

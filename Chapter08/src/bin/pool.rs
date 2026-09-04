@@ -21,6 +21,7 @@ enum Status {
 
 #[derive(Clone, Copy, Debug)]
 struct Container {
+    #[allow(dead_code)]
     name: &'static str,
     status: Status,
     ticks: u64,

@@ -88,7 +88,7 @@ impl Future for Player {
 
 fn async_add_points(player: &mut Player,
                     points: u32)
-                    -> Box<Future<Item = Player, Error = Never> + Send> {
+                    -> Box<dyn Future<Item = Player, Error = Never> + Send> {
     // Presuming that player.add_points() will send the points to a
     // database/server over a network and returns an updated
     // player score from the server/database.

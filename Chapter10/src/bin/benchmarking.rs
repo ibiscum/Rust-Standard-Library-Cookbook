@@ -1,7 +1,4 @@
-#![feature(test)]
-// The test crate was primarily designed for
-// the Rust compiler itself, so it has no stability guaranteed
-extern crate test;
+use std::time::Instant;
 
 pub fn slow_fibonacci_recursive(n: u32) -> u32 {
     match n {
@@ -53,44 +50,25 @@ pub fn fast_fibonacci_recursive(n: u32) -> u32 {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use test::Bencher;
-
-    // Functions annotated with the bench attribute will
-    // undergo a performance evaluation when running "cargo bench"
-    #[bench]
-    fn bench_slow_fibonacci_recursive(b: &mut Bencher) {
-        b.iter(|| {
-            // test::block_box is "black box" for the compiler and LLVM
-            // Telling them to not optimize a variable away
-            let n = test::black_box(20);
-            slow_fibonacci_recursive(n)
-        });
+fn time_it<F: FnMut() -> u32>(name: &str, mut f: F, n: u32, iterations: u32) {
+    let start = Instant::now();
+    let mut result = 0;
+    for _ in 0..iterations {
+        result = f();
     }
+    let elapsed = start.elapsed();
+    println!(
+        "{}: fib({}) = {}, {} iterations in {:?}",
+        name, n, result, iterations, elapsed
+    );
+}
 
-    #[bench]
-    fn bench_fibonacci_imperative(b: &mut Bencher) {
-        b.iter(|| {
-            let n = test::black_box(20);
-            fibonacci_imperative(n)
-        });
-    }
+fn main() {
+    const N: u32 = 20;
+    const ITERATIONS: u32 = 10_000;
 
-    #[bench]
-    fn bench_memoized_fibonacci_recursive(b: &mut Bencher) {
-        b.iter(|| {
-            let n = test::black_box(20);
-            memoized_fibonacci_recursive(n)
-        });
-    }
-
-    #[bench]
-    fn bench_fast_fibonacci_recursive(b: &mut Bencher) {
-        b.iter(|| {
-            let n = test::black_box(20);
-            fast_fibonacci_recursive(n)
-        });
-    }
+    time_it("slow_fibonacci_recursive", || slow_fibonacci_recursive(N), N, ITERATIONS);
+    time_it("fibonacci_imperative", || fibonacci_imperative(N), N, ITERATIONS);
+    time_it("memoized_fibonacci_recursive", || memoized_fibonacci_recursive(N), N, ITERATIONS);
+    time_it("fast_fibonacci_recursive", || fast_fibonacci_recursive(N), N, ITERATIONS);
 }

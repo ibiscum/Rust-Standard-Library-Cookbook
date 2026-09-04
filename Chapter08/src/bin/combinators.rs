@@ -21,7 +21,7 @@ fn join_all_example() {
     println!("Results of joining 3 futures: {:?}", results);
 
     // For parameters with a lifetime
-    fn sum_vecs<'a>(vecs: Vec<&'a [i32]>) -> Box<Future<Item = Vec<i32>, Error = ()> + 'static> {
+    fn sum_vecs<'a>(vecs: Vec<&'a [i32]>) -> Box<dyn Future<Item = Vec<i32>, Error = ()> + 'static> {
         Box::new(join_all(vecs.into_iter().map(|x| Ok::<i32, ()>(x.iter().sum()))))
     }
 
