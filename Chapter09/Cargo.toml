@@ -6,7 +6,7 @@ edition = "2024"
 [dependencies]
 cfg-if = "=0.1.10"
 futures = "0.1.31"
-hyper = "0.12.36"
+hyper = "0.14.12"
 reqwest = { version = "0.9.24", default-features = false, features = ["rustls-tls"] }
 serde = "1.0.229"
 serde_derive = "1.0.229"
