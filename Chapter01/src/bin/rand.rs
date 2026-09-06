@@ -21,7 +21,7 @@ fn main() {
     // We can use a reusable generator
     let mut rng = rand::thread_rng();
     // This is equivalent to rand::random()
-    if rng.gen() {
+    if rng.r#gen() {
         println!("This message has a 50-50 chance of being printed");
     }
     // A generator enables us to use ranges
@@ -38,6 +38,6 @@ fn main() {
     // use cases. If you require a particular distribution,
     // you specify it when creating the generator:
     let mut chacha_rng = rand::ChaChaRng::new_unseeded();
-    let random_chacha_num = chacha_rng.gen::<i32>();
+    let random_chacha_num = chacha_rng.r#gen::<i32>();
     println!("random_chacha_num: {}", random_chacha_num);
 }

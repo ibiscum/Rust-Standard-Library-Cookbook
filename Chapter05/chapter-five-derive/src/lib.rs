@@ -15,10 +15,10 @@ pub fn hello_world(input: TokenStream) -> TokenStream {
     let ast = syn::parse_derive_input(&s).expect("Failed to parse the source into an AST");
 
     // Build the implementation
-    let gen = impl_hello_world(&ast);
+    let generated = impl_hello_world(&ast);
 
     // Return the generated implementation
-    gen.parse()
+    generated.parse()
         .expect("Failed to parse the AST generated from deriving from HelloWorld")
 }
 

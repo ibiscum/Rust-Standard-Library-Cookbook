@@ -1,0 +1,38 @@
+[workspace]
+members = [
+    "Chapter01",
+    "Chapter02",
+    "Chapter03",
+    "Chapter04",
+    "Chapter05",
+    "Chapter05/chapter-five-derive",
+    "Chapter06",
+    "Chapter07",
+    "Chapter08",
+    "Chapter09",
+    "Chapter10",
+]
+resolver = "2"
+
+[workspace.dependencies]
+bitflags = "1.0"
+byteorder = "1.1.0"
+cfg-if = "=0.1.10"
+chapter-five-derive = { path = "Chapter05/chapter-five-derive" }
+csv = "1.0.0-beta.5"
+env_logger = "0.5.3"
+flate2 = "0.2.20"
+futures-core = "0.2.0-beta"
+futures-util = "0.2.0-beta"
+glob = "0.2.11"
+hyper = "0.12.36"
+lazy_static = "1.0"
+log = "0.4.1"
+quote = "0.3.15"
+rayon = "0.9.0"
+reqwest = { version = "0.9.24", default-features = false, features = ["rustls-tls"] }
+serde_json = "1.0.8"
+slab = "0.4.0"
+syn = "0.11.11"
+toml = "0.4.5"
+walkdir = "2.0.1"

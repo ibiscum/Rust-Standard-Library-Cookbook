@@ -5,7 +5,7 @@ authors = ["Jan Nils Ferner <jn_ferner@hotmail.de>"]
 edition = "2024"
 
 [dependencies]
-lazy_static = "1.0"
+lazy_static = { workspace = true }
 regex = "1.5"
-bitflags = "1.0"
-chapter-five-derive = { path = "chapter-five-derive" }
+bitflags = { workspace = true }
+chapter-five-derive = { workspace = true }

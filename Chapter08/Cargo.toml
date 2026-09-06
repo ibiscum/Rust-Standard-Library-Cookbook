@@ -6,5 +6,5 @@ edition = "2024"
 
 [dependencies]
 futures = "0.2.0-beta"
-futures-core = "0.2.0-beta"
-futures-util = "0.2.0-beta"
+futures-core = { workspace = true }
+futures-util = { workspace = true }

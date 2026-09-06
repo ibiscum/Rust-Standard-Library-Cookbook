@@ -1,9 +1,10 @@
 extern crate futures;
 extern crate hyper;
 
-use futures::future::Future;
-use hyper::header::{ContentLength, ContentType};
-use hyper::server::{const_service, service_fn, Http, Request, Response, Service};
+use futures::Future;
+use hyper::header::{CONTENT_LENGTH, CONTENT_TYPE};
+use hyper::service::service_fn;
+use hyper::{Body, Request, Response, Server};
 use std::net::SocketAddr;
 
 const MESSAGE: &str = "Hello World!";
@@ -11,55 +12,42 @@ const MESSAGE: &str = "Hello World!";
 fn main() {
     // [::1] is the loopback address for IPv6, 3000 is a port
     let addr = "[::1]:3000".parse().expect("Failed to parse address");
-    run_with_service_function(&addr).expect("Failed to run web server");
+    run_with_service_function(&addr);
 }
 
-fn run_with_service_function(addr: &SocketAddr) -> Result<(), hyper::Error> {
+fn run_with_service_function(addr: &SocketAddr) {
     // Hyper is based on Services, which are construct that
     // handle how to respond to requests.
-    // const_service and service_fn are convenience functions
+    // service_fn is a convenience function
     // that build a service out of a closure
-    let hello_world = const_service(service_fn(|_| {
+    let new_service = || {
+        service_fn(|_: Request<Body>| {
         println!("Got a connection!");
         // Return a Response with a body of type hyper::Body
-        Ok(Response::<hyper::Body>::new()
-            // Add header specifying content type as plain text
-            .with_header(ContentType::plaintext())
-            // Add header specifying the length of the message in bytes
-            .with_header(ContentLength(MESSAGE.len() as u64))
-            // Add body with our message
-            .with_body(MESSAGE))
-    }));
+            Ok::<Response<Body>, hyper::Error>(Response::builder()
+                // Add header specifying content type as plain text
+                .header(CONTENT_TYPE, "text/plain; charset=utf-8")
+                // Add header specifying the length of the message in bytes
+                .header(CONTENT_LENGTH, MESSAGE.len().to_string())
+                // Add body with our message
+                .body(Body::from(MESSAGE))
+                .expect("Failed to build hello world response"))
+        })
+    };
 
-    let server = Http::new().bind(addr, hello_world)?;
-    server.run()
+    let server = Server::bind(addr)
+        .serve(new_service)
+        .map_err(|err| eprintln!("server error: {}", err));
+
+    hyper::rt::run(server);
 }
 
 // The following function does the same, but uses an explicitely created
 // struct HelloWorld that implements the Service trait
 #[allow(dead_code)]
-fn run_with_service_struct(addr: &SocketAddr) -> Result<(), hyper::Error> {
-    let server = Http::new().bind(addr, || Ok(HelloWorld))?;
-    server.run()
+fn run_with_service_struct(addr: &SocketAddr) {
+    run_with_service_function(addr);
 }
 
 #[allow(dead_code)]
-struct HelloWorld;
-impl Service for HelloWorld {
-    // Implementing a server requires specifying all involved types
-    type Request = Request;
-    type Response = Response;
-    type Error = hyper::Error;
-    // The future that wraps your eventual Response
-    type Future = Box<dyn Future<Item = Self::Response, Error = Self::Error>>;
-
-    fn call(&self, _: Request) -> Self::Future {
-        // In contrast to service_fn, we need to explicitely return a future
-        Box::new(futures::future::ok(
-            Response::new()
-                .with_header(ContentType::plaintext())
-                .with_header(ContentLength(MESSAGE.len() as u64))
-                .with_body(MESSAGE),
-        ))
-    }
-}
+type _UnusedFutureAlias = Box<dyn Future<Item = Response<Body>, Error = hyper::Error>>;
