@@ -6,12 +6,7 @@ edition = "2024"
 [dependencies]
 cfg-if = { workspace = true }
 futures = "0.1.31"
-<<<<<<< HEAD
-hyper = "0.14.12"
-reqwest = { version = "0.9.24", default-features = false, features = ["rustls-tls"] }
-=======
 hyper = { workspace = true }
 reqwest = { workspace = true }
->>>>>>> 9341a88 (added workspace cargo)
 serde = "1.0.229"
 serde_derive = "1.0.229"
