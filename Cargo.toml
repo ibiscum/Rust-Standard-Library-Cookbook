@@ -21,7 +21,7 @@ cfg-if = "=1.0.4"
 chapter-five-derive = { path = "Chapter05/chapter-five-derive" }
 csv = "1.0.0-beta.5"
 env_logger = "0.11.11"
-flate2 = "0.2.20"
+flate2 = "1.1.10"
 futures-core = "0.2.0-beta"
 futures-util = "0.2.0-beta"
 glob = "0.2.11"
