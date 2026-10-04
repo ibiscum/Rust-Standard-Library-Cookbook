@@ -193,7 +193,7 @@ dependencies = [
 name = "chapter-nine"
 version = "0.1.0"
 dependencies = [
- "cfg-if 0.1.10",
+ "cfg-if 1.0.4",
  "futures 0.1.31",
  "hyper 0.14.32",
  "reqwest",
