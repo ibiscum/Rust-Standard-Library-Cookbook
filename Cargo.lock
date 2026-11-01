@@ -177,7 +177,7 @@ name = "chapter-eight"
 version = "0.1.0"
 dependencies = [
  "futures 0.3.34",
- "futures-core 0.2.0-beta",
+ "futures-core 0.3.34",
  "futures-util 0.2.0-beta",
 ]
 
@@ -611,7 +611,7 @@ version = "0.2.0-beta"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e3feaa3c573e6998c2d41dfb940482b76c1ef9b9150f6446cf5f12060b9a2ab8"
 dependencies = [
- "futures-core 0.2.0-beta",
+ "futures-core 0.2.1",
 ]
 
 [[package]]
@@ -626,12 +626,11 @@ dependencies = [
 
 [[package]]
 name = "futures-core"
-version = "0.2.0-beta"
+version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "90a83c1b1c895acbb7165f0057f6772523ca6df210730f74955c27449b5411cc"
+checksum = "7455c91eb2eae38f33b013f77ebe766c75761af333efd9d550e154045c63e225"
 dependencies = [
  "either",
- "pin-api",
 ]
 
 [[package]]
@@ -667,7 +666,7 @@ version = "0.2.0-beta"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "05423a90af7b3fa6ca88034f0806553a59235b1a1098e32c4ffcbecf83f33045"
 dependencies = [
- "futures-core 0.2.0-beta",
+ "futures-core 0.2.1",
  "iovec",
 ]
 
@@ -695,7 +694,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c99954270203f2c4c38cb8c0819648e8600eb5dbebd03f6ec35268f16bd98018"
 dependencies = [
  "futures-channel 0.2.0-beta",
- "futures-core 0.2.0-beta",
+ "futures-core 0.2.1",
 ]
 
 [[package]]
@@ -718,7 +717,7 @@ checksum = "674f3ba0fbc1e544de9776fb9d1c5c1cd72c5e17f1523e409a1c5642b57a734e"
 dependencies = [
  "either",
  "futures-channel 0.2.0-beta",
- "futures-core 0.2.0-beta",
+ "futures-core 0.2.1",
  "futures-io 0.2.0-beta",
  "futures-sink 0.2.0-beta",
 ]
@@ -1327,12 +1326,6 @@ name = "percent-encoding"
 version = "2.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9b4f627cb1b25917193a259e49bdad08f671f8d9708acfd5fe0a8c1455d87220"
-
-[[package]]
-name = "pin-api"
-version = "0.2.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4806efe6dbda279bde1fe6e07de93e0a022487f290b5dee3e465793e1c34f7ad"
 
 [[package]]
 name = "pin-project-lite"
